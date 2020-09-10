@@ -15,7 +15,7 @@ class CleanFloorController {
         logger.info("Request received $request")
 
         val response = request.map { (testId, test) ->
-            testId to computeLeastMoves(test.floor)
+            testId to computeLeastMoves(test.floor.toMutableList())
         }.toMap()
 
         logger.info("Returning result $response")
@@ -23,29 +23,23 @@ class CleanFloorController {
     }
 
     companion object {
-        private fun computeLeastMoves(floor: List<Int>): Int {
-            val done = false
-            var pos  = 0
+        fun computeLeastMoves(floor: MutableList<Int>): Int {
+            var pos = 0
+            var moves = 0
 
-//            while (done){
-//                val moveLeft = pos > 0 && floor[pos-1] > 0
-//
-//                if (moveLeft) {
-//                    pos -= 1
-//                    floor[pos] -= 1
-//                } else {
-//                    pos += 1
-//                    if (floor[pos] > 0) {
-//                        floor[pos] -= 1
-//                    } else {
-//                        floor[pos] += 1
-//                    }
-//                }
-//
-//                val right = Integer.min(pos +1, )
-//            }
-            return pos
+            while (floor.any { it > 0 }) {
+                val moveLeft = pos > 0 && floor[pos - 1] > 0
+
+                if (moveLeft) pos -= 1
+                else pos += 1
+
+                if (floor[pos] > 0) floor[pos] -= 1
+                else floor[pos] += 1
+
+                moves += 1
+            }
+
+            return moves
         }
-
     }
 }
