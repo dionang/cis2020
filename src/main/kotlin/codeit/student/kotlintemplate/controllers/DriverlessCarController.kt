@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class DriverlessCarController {
-
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
     @PostMapping("/driverless-car")
@@ -20,10 +19,12 @@ class DriverlessCarController {
         return response
     }
 
-    fun evaluate(request: DriverlessCarRequest): DriverlessCarResponse {
-        return DriverlessCarResponse(
-            gameId = request.gameId,
-            instructions = listOf()
-        )
+    companion object {
+        fun evaluate(request: DriverlessCarRequest): DriverlessCarResponse {
+            return DriverlessCarResponse(
+                gameId = request.gameId,
+                instructions = listOf()
+            )
+        }
     }
 }

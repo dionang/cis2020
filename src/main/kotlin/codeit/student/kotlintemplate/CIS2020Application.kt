@@ -4,8 +4,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class KotlinTemplateApplication
+class CIS2020Application
 
 fun main(args: Array<String>) {
-	runApplication<KotlinTemplateApplication>(*args)
+	runApplication<CIS2020Application>(*args)
 }

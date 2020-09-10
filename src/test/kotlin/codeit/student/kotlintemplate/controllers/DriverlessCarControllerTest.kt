@@ -1,16 +1,14 @@
-package codeit.student.kotlintemplate
+package codeit.student.kotlintemplate.controllers
 
-import codeit.student.kotlintemplate.controllers.DriverlessCarController
 import codeit.student.kotlintemplate.models.driverless.*
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.assertj.core.api.Assertions.*
 
 internal class DriverlessCarControllerTest {
-    private val driverlessCarController = DriverlessCarController()
 
     @Test
     fun `sample test case`() {
-        val response = driverlessCarController.evaluate(
+        val response = DriverlessCarController.evaluate(
             DriverlessCarRequest(
                 gameId = "G495690bb",
                 roads = listOf(
