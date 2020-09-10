@@ -1,4 +1,4 @@
-package codeit.student.kotlintemplate
+package codeit.student.kotlintemplate.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
