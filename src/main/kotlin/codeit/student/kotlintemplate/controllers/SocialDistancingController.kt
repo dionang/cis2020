@@ -33,12 +33,12 @@ class SocialDistancingController {
             val extraSpaces = seats - minSeats
 
             // nCr, n is number of people + 1 (positions to insert spaces), r = no. of spaces
-            return factorial(people+extraSpaces) / factorial(extraSpaces) / factorial(people)
+            return combination(people + extraSpaces, extraSpaces)
 
         }
 
-        private fun factorial(n: Int): Int {
-            return (1..n).reduce { acc, i -> acc * i }
+        private fun combination(n: Int, r: Int): Int {
+            return (r..n).reduce { acc, i -> acc * i / (i-r) }
         }
     }
 }
