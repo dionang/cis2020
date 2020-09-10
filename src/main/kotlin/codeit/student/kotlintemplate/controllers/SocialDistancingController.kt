@@ -1,5 +1,7 @@
 package codeit.student.kotlintemplate.controllers
 
+import codeit.student.kotlintemplate.models.social.SocialDistancingRequest
+import codeit.student.kotlintemplate.models.social.SocialDistancingResponse
 import codeit.student.kotlintemplate.models.social.Test
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.PostMapping
@@ -12,12 +14,14 @@ class SocialDistancingController {
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
     @PostMapping("/social_distancing")
-    fun getWays(@RequestBody request: Map<String, Test>): Map<String, Int> {
+    fun getWays(@RequestBody request: SocialDistancingRequest): SocialDistancingResponse {
         logger.info("Request received $request")
 
-        val response = request.map { (testId, test) ->
-            testId to computeWays(test.seats, test.people, test.spaces)
-        }.toMap()
+        val response = SocialDistancingResponse(
+            request.tests.map { (testId, test) ->
+                testId to computeWays(test.seats, test.people, test.spaces)
+            }.toMap()
+        )
 
         logger.info("Returning result $response")
         return response

@@ -1,5 +1,7 @@
 package codeit.student.kotlintemplate.controllers
 
+import codeit.student.kotlintemplate.models.clean.CleanFloorRequest
+import codeit.student.kotlintemplate.models.clean.CleanFloorResponse
 import codeit.student.kotlintemplate.models.clean.Test
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.PostMapping
@@ -11,12 +13,14 @@ class CleanFloorController {
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
     @PostMapping("/clean_floor")
-    fun getMoves(@RequestBody request: Map<String, Test>): Map<String, Int> {
+    fun getMoves(@RequestBody request: CleanFloorRequest): CleanFloorResponse {
         logger.info("Request received $request")
 
-        val response = request.map { (testId, test) ->
-            testId to computeLeastMoves(test.floor.toMutableList())
-        }.toMap()
+        val response = CleanFloorResponse(
+            request.tests.map { (testId, test) ->
+                testId to computeLeastMoves(test.floor.toMutableList())
+            }.toMap()
+        )
 
         logger.info("Returning result $response")
         return response
