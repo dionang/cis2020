@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestController
 class CleanFloorController {
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
-    @PostMapping("/social_distancing")
-    fun getWays(@RequestBody request: Map<String, Test>): Map<String, Int> {
+    @PostMapping("/clean_floor")
+    fun getMoves(@RequestBody request: Map<String, Test>): Map<String, Int> {
         logger.info("Request received $request")
 
         val response = request.map { (testId, test) ->
