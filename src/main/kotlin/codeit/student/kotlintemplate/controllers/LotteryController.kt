@@ -11,7 +11,9 @@ class LotteryController {
 
     @GetMapping("/lottery")
     fun getInstructions(): List<Int> {
-        return calculateGuesses()
+        val response = calculateGuesses()
+        logger.info("Returning result $response")
+        return response
     }
 
     private fun calculateGuesses(): List<Int> {
