@@ -1,6 +1,6 @@
 package codeit.student.kotlintemplate.models.salad
 
 data class SaladSpreeRequest(
-    val numberOfSalads: Int,
-    val saladPricesStreetMap: List<List<String>>
+    val number_of_salads: Int,
+    val salad_prices_street_map: List<List<String>>
 )

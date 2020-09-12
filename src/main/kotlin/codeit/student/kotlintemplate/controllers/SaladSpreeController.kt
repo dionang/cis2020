@@ -16,7 +16,7 @@ class SaladSpreeController {
         logger.info("Request received $request")
 
         val response = SaladSpreeResponse(
-            getMinAmountSpent(request.numberOfSalads, request.saladPricesStreetMap)
+            getMinAmountSpent(request.number_of_salads, request.salad_prices_street_map)
         )
 
         logger.info("Returning result $response")
