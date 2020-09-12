@@ -31,7 +31,9 @@ class SocialDistancingController {
             val minSeats = people * (spaces + 1) - spaces // fence posting spaces with people
             val extraSpaces = seats - minSeats
 
-            // nCr, n is number of people + 1 (positions to insert spaces), r = no. of spaces
+            // when inserting spaces between 2 people, doesn't matter which position
+            // if there's for example 3 spaces between 2 people, ways to insert is 1, as the arrangement of spaces dont matter
+            // therefore, only need to consider combination of ways of arranging people and the extra spaces
             return combination(people + extraSpaces, extraSpaces)
         }
 

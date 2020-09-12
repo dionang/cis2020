@@ -10,7 +10,7 @@ class LotteryController {
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
     @GetMapping("/lottery")
-    fun getInstructions(): List<Int> {
+    fun getGuess(): List<Int> {
         val response = calculateGuesses()
         logger.info("Returning result $response")
         return response

@@ -14,7 +14,7 @@ class SupermarketController {
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
     @PostMapping("/supermarket")
-    fun getWays(@RequestBody request: SupermarketRequest): SupermarketResponse {
+    fun getPathLength(@RequestBody request: SupermarketRequest): SupermarketResponse {
         logger.info("Request received $request")
 
         val response = SupermarketResponse(
