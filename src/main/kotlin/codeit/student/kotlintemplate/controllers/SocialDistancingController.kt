@@ -2,7 +2,6 @@ package codeit.student.kotlintemplate.controllers
 
 import codeit.student.kotlintemplate.models.social.SocialDistancingRequest
 import codeit.student.kotlintemplate.models.social.SocialDistancingResponse
-import codeit.student.kotlintemplate.models.social.Test
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
