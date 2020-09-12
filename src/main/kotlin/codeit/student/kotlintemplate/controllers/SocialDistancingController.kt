@@ -27,7 +27,7 @@ class SocialDistancingController {
     }
 
     companion object {
-        fun computeWays(seats: Int, people: Int,  spaces: Int): Int {
+        fun computeWays(seats: Int, people: Int,  spaces: Int): Long {
             val minSeats = people * (spaces + 1) - spaces // fence posting spaces with people
             val extraSpaces = seats - minSeats
 
@@ -35,9 +35,9 @@ class SocialDistancingController {
             return combination(people + extraSpaces, extraSpaces)
         }
 
-        private fun combination(n: Int, r: Int): Int {
+        private fun combination(n: Int, r: Int): Long {
             val x = max(r, n-r)
-            var res = 1
+            var res: Long = 1
 
             for (i in x+1..n) {
                 res *= i

@@ -31,4 +31,11 @@ internal class SocialDistancingControllerTest {
         val actual   = SocialDistancingController.computeWays(6, 3, 1)
         assertThat(actual).isEqualTo(expected)
     }
+
+    @Test
+    fun `test case 5`() {
+//        val expected = 4
+        val actual   = SocialDistancingController.computeWays(199, 97, 1)
+        println(actual)
+    }
 }
