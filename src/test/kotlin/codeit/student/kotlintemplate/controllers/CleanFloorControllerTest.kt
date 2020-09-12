@@ -25,4 +25,11 @@ internal class CleanFloorControllerTest {
         val actual   = CleanFloorController.computeLeastMoves(mutableListOf(0,2,2,0,0))
         assertThat(actual).isEqualTo(expected)
     }
+
+    @Test
+    fun `test case 4`() {
+//        val expected = 4
+        val actual   = CleanFloorController.computeLeastMoves(mutableListOf(1, 2, 0, 15, 2, 3))
+        println(actual)
+    }
 }

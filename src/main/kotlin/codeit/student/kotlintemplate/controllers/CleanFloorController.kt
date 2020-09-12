@@ -32,7 +32,7 @@ class CleanFloorController {
             var moves = 0
 
             while (floor.any { it > 0 }) {
-                val moveLeft = pos > 0 && floor[pos - 1] > 0
+                val moveLeft = pos == floor.size - 1 || pos > 0 && floor[pos - 1] > 0
 
                 if (moveLeft) pos -= 1
                 else pos += 1
