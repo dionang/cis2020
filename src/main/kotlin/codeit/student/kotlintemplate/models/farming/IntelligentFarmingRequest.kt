@@ -1,6 +1,5 @@
 package codeit.student.kotlintemplate.models.farming
 
 data class IntelligentFarmingRequest (
-    val id: String,
-    val tests: List<Test>
+    val id: List<Test>
 )
