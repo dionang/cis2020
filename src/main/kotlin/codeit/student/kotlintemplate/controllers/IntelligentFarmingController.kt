@@ -1,38 +1,103 @@
 package codeit.student.kotlintemplate.controllers
 
+import codeit.student.kotlintemplate.models.farming.IntelligentFarmingRequestResponse
+import codeit.student.kotlintemplate.models.farming.Test
 import org.slf4j.LoggerFactory
-import org.springframework.http.HttpEntity
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
-import kotlin.math.roundToInt
+import kotlin.math.min
 
 @RestController
 class IntelligentFarmingController {
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
     @PostMapping("/intelligent-farming")
-    fun getGeneSequence(request: HttpEntity<String>): List<Int> {
-        val jsonString = request.body
-        logger.info("Request received $jsonString")
-
-//        val response = SLSMController.getOptimalDiceRolls(request.boardSize, request.players, request.jumps)
-//        logger.info("Returning result $response")
-        return emptyList()
+    fun getGeneSequence(@RequestBody request: IntelligentFarmingRequestResponse): IntelligentFarmingRequestResponse {
+        logger.info("Request received $request")
+        val response = IntelligentFarmingRequestResponse(
+            request.id,
+            request.list.map { test ->
+                Test(
+                    id = test.id,
+                    geneSequence = getMaxDRIGeneSequence(test.geneSequence)
+                )
+            }
+        )
+        logger.info("Returning result $response")
+        return response
     }
 
-    private fun getMaxDRIGeneSequence(geneSequence: String): List<Int> {
-        val numbers = 10
-        val results = (1..100).map { diff ->
-            (1..numbers).map { it*diff%100 }
+    companion object {
+        fun getMaxDRIGeneSequence(geneSequence: String): String {
+            return buildGeneSequence(getSequenceComponents(geneSequence))
         }
 
-        return (0..9).map{ i ->
-            var sum = 0
-            (0..99).forEach { j ->
-                sum += results[j][i]
+        fun getSequenceComponents(geneSequence: String): MutableMap<String, Int> {
+            val freq = mutableMapOf(
+                'A' to 0,
+                'C' to 0,
+                'G' to 0,
+                'T' to 0
+            )
+
+            for (ch in geneSequence) {
+                freq[ch] = freq.getValue(ch) + 1
             }
 
-            (sum.toDouble() / 100).roundToInt()
+            var acgt = freq.values.min()!!
+            var cc   = freq.getValue('C') - acgt   // calculate unused c
+
+            if (cc % 2 != 0) {                          // adjustment to score more points
+                acgt -= 1
+                cc   += 1
+            }
+
+            cc /= 2                                     // divide to find number of CC tokens
+
+            return mutableMapOf(
+                "ACGT" to acgt,
+                "CC"   to cc,
+                "A" to freq.getValue('A') - acgt,
+                "G" to freq.getValue('G') - acgt,
+                "T" to freq.getValue('T') - acgt
+            )
+        }
+
+        fun buildGeneSequence(components: MutableMap<String, Int>): String {
+            val builder = StringBuilder()
+
+            // build using AACGT
+            val aacgt = min(components.getValue("ACGT"), components.getValue("A"))
+            components["ACGT"] = components.getValue("ACGT") - aacgt
+            components["A"] = components.getValue("A") - aacgt
+            builder.append("AACGT".repeat(aacgt))
+
+            // use up as many A tokens as possible without getting 3 consecutive
+            var consecutiveA = 0
+            while (components.getValue("A") != 0) {
+                if (consecutiveA < 2) {
+                    components["A"] = components.getValue("A") - 1
+                    builder.append("A")
+                    consecutiveA += 1
+                } else {
+                    components.keys
+                        .firstOrNull { it != "A" && components.getValue(it) > 0 }
+                        ?.let {
+                            components[it] = components.getValue(it) - 1
+                            builder.append(it)
+                            consecutiveA = 0
+                        }
+                        ?: break
+                }
+            }
+
+            // use all remaining tokens
+            components.entries.forEach { (key, count) ->
+                builder.append(key.repeat(count))
+            }
+
+            return builder.toString()
         }
     }
 }
