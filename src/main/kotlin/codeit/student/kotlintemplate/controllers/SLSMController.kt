@@ -17,9 +17,9 @@ class SLSMController {
     fun getDiceRolls(@RequestBody request: SLSMRequest): List<Int> {
         logger.info("Request received $request")
 
-//        val response = getOptimalDiceRolls(request.boardSize, request.players, request.jumps)
-        val response = listOf<Int>()
-        tracePositions(request.boardSize, request.players, request.jumps, listOf(5,1,6,6,2,2,1,5,5,3,3,4,2,1,1,5,1,6,2,5,2,1,5,4,5,5,5,6,1 ))
+        val response = getOptimalDiceRolls(request.boardSize, request.players, request.jumps)
+//        val response = listOf<Int>()
+//        tracePositions(request.boardSize, request.players, request.jumps, listOf(5,1,6,6,2,2,1,5,5,3,3,4,2,1,1,5,1,6,2,5,2,1,5,4,5,5,5,6,1 ))
         logger.info("Returning result $response")
         return response
     }
