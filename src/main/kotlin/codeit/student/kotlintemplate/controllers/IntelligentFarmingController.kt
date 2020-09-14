@@ -1,11 +1,9 @@
 package codeit.student.kotlintemplate.controllers
 
 import org.slf4j.LoggerFactory
+import org.springframework.http.HttpEntity
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
-import java.nio.charset.StandardCharsets
-import javax.servlet.http.HttpServletRequest
 import kotlin.math.roundToInt
 
 @RestController
@@ -13,8 +11,8 @@ class IntelligentFarmingController {
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
     @PostMapping("/intelligent-farming")
-    fun getDiceRolls(request: HttpServletRequest): List<Int> {
-        val jsonString = request.inputStream.readAllBytes().toString(StandardCharsets.UTF_8)
+    fun getGeneSequence(request: HttpEntity<String>): List<Int> {
+        val jsonString = request.body
         logger.info("Request received $jsonString")
 
 //        val response = SLSMController.getOptimalDiceRolls(request.boardSize, request.players, request.jumps)
@@ -22,7 +20,7 @@ class IntelligentFarmingController {
         return emptyList()
     }
 
-    private fun calculateGuesses(): List<Int> {
+    private fun getMaxDRIGeneSequence(geneSequence: String): List<Int> {
         val numbers = 10
         val results = (1..100).map { diff ->
             (1..numbers).map { it*diff%100 }
