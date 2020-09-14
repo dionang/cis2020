@@ -6,14 +6,16 @@ import org.slf4j.LoggerFactory
 import org.springframework.http.HttpEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import javax.servlet.http.HttpServletRequest
 import kotlin.math.roundToInt
 
 class IntelligentFarmingController {
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
     @PostMapping("/intelligent-farming")
-    fun getDiceRolls(@RequestBody request: HttpEntity<String>): List<Int> {
-        logger.info("Request received $request")
+    fun getDiceRolls(@RequestBody request: HttpServletRequest): List<Int> {
+        val jsonString = request.inputStream.toString()
+        logger.info("Request received $jsonString")
 
 //        val response = SLSMController.getOptimalDiceRolls(request.boardSize, request.players, request.jumps)
 //        logger.info("Returning result $response")
