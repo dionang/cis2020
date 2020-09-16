@@ -15,13 +15,9 @@ class IntelligentFarmingController {
     @PostMapping("/intelligent-farming")
     fun getGeneSequence(@RequestBody request: IntelligentFarmingRequestResponse): IntelligentFarmingRequestResponse {
         logger.info("Request received $request")
-        val response = IntelligentFarmingRequestResponse(
-            request.id,
-            request.list.map { test ->
-                Test(
-                    id = test.id,
-                    geneSequence = getMaxDRIGeneSequence(test.geneSequence)
-                )
+        val response = request.copy(
+            list = request.list.map {
+                Test(it.id, getMaxDRIGeneSequence(it.geneSequence))
             }
         )
         logger.info("Returning result $response")
