@@ -28,16 +28,45 @@ class BoredScribeController(val resourceLoader: ResourceLoader) {
     }
 
     fun getExpandedString(string: String): String {
-        val words = resourceLoader.getResource("classpath:wordlist.txt").file.readLines().toHashSet()
+        val dictionary = resourceLoader.getResource("classpath:wordlist.txt").file.readLines().toHashSet()
+        val words = findNextWords(string, dictionary, 0)
 
-        return string
+        return words.joinToString(separator = " ") + string.substring(words.sumBy { it.length })
+    }
+
+    fun findNextWords(string: String, dictionary: Set<String>, fromIndex: Int): List<String> {
+        if (fromIndex >= string.length) return arrayListOf()
+
+        var token = ""
+        var prevToken = ""
+        var nextWord = ""
+        var currWords = emptyList<String>()
+        for (i in fromIndex until string.length){
+            token += string[i]
+            if (token in dictionary) {
+                if (token.length > prevToken.length) {
+                    val nextWords = findNextWords(string, dictionary, fromIndex+token.length)
+                    if (nextWords.size >= currWords.size ) {
+                        nextWord = token
+                        currWords = nextWords
+                    }
+
+                }
+                prevToken = token
+            }
+        }
+
+        if (nextWord.isEmpty()) return emptyList()
+        return listOf(nextWord) + currWords
     }
 
     fun decrypt(encryptedText: String): String {
-        return (1..26).map { shift ->
+        return getExpandedString(
+            (1..26).map { shift ->
                 val decryptedText = decode(encryptedText, shift)
                 decryptedText to getEntropy(decryptedText)
             }.minBy { it.second }!!.first
+        )
     }
 
     companion object {
