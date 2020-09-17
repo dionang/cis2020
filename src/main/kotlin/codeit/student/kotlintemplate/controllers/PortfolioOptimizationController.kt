@@ -14,7 +14,7 @@ class PortfolioOptimizationController {
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
     @PostMapping("/optimizedportfolio")
-    fun getOptimalNumberOfBooks(@RequestBody request: PortfolioOptimizationRequest): PortfolioOptimizationResponse {
+    fun evaluate(@RequestBody request: PortfolioOptimizationRequest): PortfolioOptimizationResponse {
         logger.info("Request received $request")
         val response = PortfolioOptimizationResponse(
             request.inputs.map{ evaluate(it) }

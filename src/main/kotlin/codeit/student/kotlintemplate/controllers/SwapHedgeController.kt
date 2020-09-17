@@ -11,7 +11,7 @@ class SwapHedgeController {
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
     @PostMapping("/swaphedge")
-    fun getOptimalNumberOfBooks(@RequestBody request: SwapHedgeRequest): Map<String, Int> {
+    fun evaluate(@RequestBody request: SwapHedgeRequest): Map<String, Int> {
         logger.info("Request received $request")
         val response = mapOf(
             "action" to getAction(request)
@@ -24,7 +24,7 @@ class SwapHedgeController {
         fun getAction(request: SwapHedgeRequest): Int {
             if (request.time == 0) return 0
 
-            return request.order!!
+            return request.order
 //            // client buys
 //            if (request.order!! > 0) {
 //                val diff = request.ask - request.bid

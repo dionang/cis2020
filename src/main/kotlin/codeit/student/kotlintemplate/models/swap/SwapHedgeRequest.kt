@@ -8,7 +8,7 @@ data class SwapHedgeRequest (
     val our_position: Int,
     val balance: Double,
     val client_balance: Double,
-    val order: Int?,
-    val run_id: String?,
-    val tradedate_id: String?
+    val order: Int,
+    val run_id: String,
+    val tradedate_id: String
 )
