@@ -7,6 +7,8 @@ import org.springframework.core.io.ResourceLoader
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
+import java.io.BufferedReader
+import java.io.InputStreamReader
 import kotlin.math.ln
 
 @RestController
@@ -28,7 +30,15 @@ class BoredScribeController(val resourceLoader: ResourceLoader) {
     }
 
     fun getExpandedString(string: String): String {
-        val dictionary = resourceLoader.getResource("classpath:wordlist.txt").file.readLines().toHashSet()
+        val reader = BufferedReader(
+            InputStreamReader(resourceLoader.getResource("classpath:wordlist.txt").inputStream)
+        )
+
+        val dictionary = mutableSetOf<String>()
+        while (reader.ready()) {
+            dictionary.add(reader.readLine())
+        }
+
         val words = findNextWords(string, dictionary, 0)
 
         return words.joinToString(separator = " ") + string.substring(words.sumBy { it.length })
