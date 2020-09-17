@@ -25,6 +25,5 @@ internal class BabylonControllerTest {
             bookIndex = 0,
             booksRead = 0
         )
-        println(actual)
     }
 }
