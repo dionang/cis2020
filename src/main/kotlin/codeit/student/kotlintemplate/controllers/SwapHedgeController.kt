@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 class SwapHedgeController {
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
-    @PostMapping("/optimizedportfolio")
+    @PostMapping("/swaphedge")
     fun getOptimalNumberOfBooks(@RequestBody request: SwapHedgeRequest): Map<String, Int> {
         logger.info("Request received $request")
         val response = mapOf(
