@@ -15,4 +15,16 @@ internal class BabylonControllerTest {
         )
         assertThat(actual).isEqualTo(expected)
     }
+
+    @Test
+    fun `test case 2`() {
+        val expected = 5
+        val actual = BabylonController.getNumberOfBooksRead(
+            books = listOf(70, 57, 40, 35, 27, 29, 61, 53, 54, 71, 28, 49, 42, 49, 20, 30, 45),
+            days = arrayListOf(105, 86, 118, 99),
+            bookIndex = 0,
+            booksRead = 0
+        )
+        println(actual)
+    }
 }

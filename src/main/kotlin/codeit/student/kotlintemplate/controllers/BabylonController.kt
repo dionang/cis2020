@@ -15,23 +15,31 @@ class BabylonController {
     fun getOptimalNumberOfBooks(@RequestBody request: BabylonRequest): BabylonResponse {
         logger.info("Request received $request")
         val response = BabylonResponse(
-            getNumberOfBooksRead(
-                books = request.books,
-                days  = request.days,
-                bookIndex = 0,
-                booksRead = 0
-            )
+            evaluate(request.books, request.days)
         )
         logger.info("Returning result $response")
         return response
     }
 
     companion object {
+        fun evaluate(books: List<Int>, days: ArrayList<Int>): Int {
+            val maxBooks = days.max()!! / books.min()!!
+            println(maxBooks)
+            return getNumberOfBooksRead(
+                books = books.sorted().subList(0, maxBooks),
+                days  = days,
+                bookIndex = 0,
+                booksRead = 0
+            )
+        }
+
         fun getNumberOfBooksRead(books: List<Int>, days: ArrayList<Int>, bookIndex: Int, booksRead: Int): Int {
             if (bookIndex >= books.size)  return booksRead
 
             val book = books[bookIndex]
             var max = booksRead
+            var canExpand = false
+
             for (i in 0 until days.size) {
                 if (book <= days[i]) {
                     days[i] -= book
@@ -40,8 +48,11 @@ class BabylonController {
                         max = booksReadIfChosen
                     }
                     days[i] += book
+                    canExpand = true
                 }
             }
+
+            if (!canExpand) return max
 
             val booksReadIfNotChosen = getNumberOfBooksRead(books, days, bookIndex + 1, booksRead)
             if (booksReadIfNotChosen > max) {
