@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
-import java.lang.RuntimeException
 import kotlin.math.min
 
 @RestController
@@ -27,36 +26,6 @@ class IntelligentFarmingController {
 
     companion object {
         fun getMaxDRIGeneSequence(geneSequence: String): String {
-            val sortedGeneSequence = buildGeneSequence(getSequenceComponents(geneSequence))
-
-            val freq = mutableMapOf(
-                'A' to 0,
-                'C' to 0,
-                'G' to 0,
-                'T' to 0
-            )
-
-            val freq2 = mutableMapOf(
-                'A' to 0,
-                'C' to 0,
-                'G' to 0,
-                'T' to 0
-            )
-
-            for (ch in geneSequence) {
-                freq[ch] = freq.getValue(ch) + 1
-            }
-
-            for (ch in sortedGeneSequence) {
-                freq2[ch] = freq2.getValue(ch) + 1
-            }
-
-            if (freq != freq2) {
-                println(freq)
-                println(freq2)
-                throw RuntimeException("string char frequencies do not match")
-            }
-
             return buildGeneSequence(getSequenceComponents(geneSequence))
         }
 
@@ -125,6 +94,32 @@ class IntelligentFarmingController {
             }
 
             return builder.toString()
+        }
+
+        fun countScore(geneSequence: String): Int {
+            var token = ""
+            var score = 0
+
+            for (ch in geneSequence) {
+                token += ch
+
+                when {
+                    token.endsWith("AAA") -> {
+                        token = ""
+                        score -= 10
+                    }
+                    token.endsWith("ACGT") -> {
+                        token = ""
+                        score += 15
+                    }
+                    token.endsWith("CC") -> {
+                        token = ""
+                        score += 25
+                    }
+                }
+            }
+
+            return score
         }
     }
 }

@@ -46,6 +46,7 @@ internal class IntelligentFarmingControllerTest {
             )
         )
 
+        println("Actual score: ${IntelligentFarmingController.countScore(actual)}")
         assertThat(actual).isEqualTo(expected)
     }
 
@@ -80,6 +81,72 @@ internal class IntelligentFarmingControllerTest {
             )
         )
 
+        println("Actual score: ${IntelligentFarmingController.countScore(actual)}")
         assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `check threshold 1`() {
+        val expected = 9600
+        val geneSequence = IntelligentFarmingController.getMaxDRIGeneSequence(
+            listOf(
+                "A".repeat(700),
+                "C".repeat(640),
+                "G".repeat(640),
+                "T".repeat(840)
+            ).joinToString(separator = "")
+        )
+        val actual = IntelligentFarmingController.countScore(geneSequence)
+        assertThat(actual).isEqualTo(expected)
+
+    }
+
+    @Test
+    fun `check threshold 2`() {
+        val expected = 11810
+        val geneSequence = IntelligentFarmingController.getMaxDRIGeneSequence(
+            listOf(
+                "A".repeat(495),
+                "C".repeat(846),
+                "G".repeat(684),
+                "T".repeat(630)
+            ).joinToString(separator = "")
+        )
+
+        println(geneSequence)
+        val actual = IntelligentFarmingController.countScore(geneSequence)
+        assertThat(actual).isEqualTo(expected)
+
+    }
+
+    @Test
+    fun `check threshold 3`() {
+        val expected = 11200
+        val geneSequence = IntelligentFarmingController.getMaxDRIGeneSequence(
+            listOf(
+                "A".repeat(870),
+                "C".repeat(750),
+                "G".repeat(940),
+                "T".repeat(730)
+            ).joinToString(separator = "")
+        )
+        val actual = IntelligentFarmingController.countScore(geneSequence)
+        assertThat(actual).isEqualTo(expected)
+
+    }
+    @Test
+    fun `check threshold 4`() {
+        val expected = 45
+        val geneSequence = IntelligentFarmingController.getMaxDRIGeneSequence(
+            listOf(
+                "A".repeat(11),
+                "C".repeat(4),
+                "G".repeat(3),
+                "T".repeat(2)
+            ).joinToString(separator = "")
+        )
+        val actual = IntelligentFarmingController.countScore(geneSequence)
+        assertThat(actual).isEqualTo(expected)
+
     }
 }
