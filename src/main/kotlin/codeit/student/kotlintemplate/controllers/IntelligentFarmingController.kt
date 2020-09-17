@@ -17,7 +17,7 @@ class IntelligentFarmingController {
         logger.info("Request received $request")
         val response = request.copy(
             list = request.list.map {
-                Test(it.id, getMaxDRIGeneSequence(it.geneSequence))
+                Test(it.id, getMaxDRIGeneSequence2(it.geneSequence))
             }
         )
         logger.info("Returning result $response")
@@ -27,6 +27,63 @@ class IntelligentFarmingController {
     companion object {
         fun getMaxDRIGeneSequence(geneSequence: String): String {
             return buildGeneSequence(getSequenceComponents(geneSequence))
+        }
+
+        fun getMaxDRIGeneSequence2(geneSequence: String): String {
+            val builder = StringBuilder()
+            val freq = mutableMapOf(
+                'A' to 0,
+                'C' to 0,
+                'G' to 0,
+                'T' to 0
+            )
+
+            for (ch in geneSequence) {
+                freq[ch] = freq.getValue(ch) + 1
+            }
+
+            var acgt = freq.values.min()!!
+            var cc   = freq.getValue('C') - acgt   // calculate unused c
+
+            if (cc % 2 != 0) {                          // adjustment to score more points
+                acgt -= 1
+                cc   += 1
+            }
+
+            cc /= 2
+
+            builder.append("ACGT".repeat(acgt))
+            builder.append("CC".repeat(cc))
+
+            freq['A'] = freq.getValue('A') - acgt
+            freq['C'] = freq.getValue('C') - acgt - cc * 2
+            freq['G'] = freq.getValue('G') - acgt
+            freq['T'] = freq.getValue('T') - acgt
+
+
+            var consecutiveA = 0
+            while (freq.getValue('A') != 0) {
+                if (consecutiveA < 2) {
+                    freq['A'] = freq.getValue('A') - 1
+                    builder.append('A')
+                    consecutiveA += 1
+                } else {
+                    freq.keys
+                        .firstOrNull { it != 'A' && freq.getValue(it) > 0 }
+                        ?.let {
+                            freq[it] = freq.getValue(it) - 1
+                            builder.append(it)
+                            consecutiveA = 0
+                        }
+                        ?: break
+                }
+            }
+
+            // use all remaining tokens
+            builder.append("G".repeat(freq['G']!!))
+            builder.append("T".repeat(freq['T']!!))
+
+            return builder.toString()
         }
 
         fun getSequenceComponents(geneSequence: String): MutableMap<String, Int> {

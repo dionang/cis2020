@@ -88,7 +88,7 @@ internal class IntelligentFarmingControllerTest {
     @Test
     fun `check threshold 1`() {
         val expected = 9600
-        val geneSequence = IntelligentFarmingController.getMaxDRIGeneSequence(
+        val geneSequence = IntelligentFarmingController.getMaxDRIGeneSequence2(
             listOf(
                 "A".repeat(700),
                 "C".repeat(640),
@@ -104,7 +104,7 @@ internal class IntelligentFarmingControllerTest {
     @Test
     fun `check threshold 2`() {
         val expected = 11810
-        val geneSequence = IntelligentFarmingController.getMaxDRIGeneSequence(
+        val geneSequence = IntelligentFarmingController.getMaxDRIGeneSequence2(
             listOf(
                 "A".repeat(495),
                 "C".repeat(846),
@@ -122,7 +122,7 @@ internal class IntelligentFarmingControllerTest {
     @Test
     fun `check threshold 3`() {
         val expected = 11200
-        val geneSequence = IntelligentFarmingController.getMaxDRIGeneSequence(
+        val geneSequence = IntelligentFarmingController.getMaxDRIGeneSequence2(
             listOf(
                 "A".repeat(870),
                 "C".repeat(750),
