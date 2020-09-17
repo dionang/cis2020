@@ -17,7 +17,7 @@ class IntelligentFarmingController {
         logger.info("Request received $request")
         val response = request.copy(
             list = request.list.map {
-                Test(it.id, getMaxDRIGeneSequence2(it.geneSequence))
+                Test(it.id, getMaxDRIGeneSequence(it.geneSequence))
             }
         )
         logger.info("Returning result $response")
