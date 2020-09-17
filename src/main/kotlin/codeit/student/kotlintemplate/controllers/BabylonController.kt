@@ -24,7 +24,7 @@ class BabylonController {
 
     companion object {
         fun evaluate(books: List<Int>, days: ArrayList<Int>): Int {
-            val maxBooks = min(days.size * 4, books.size)
+            val maxBooks = min(days.size * 3, books.size)
             println("maxBooks: $maxBooks")
             return getNumberOfBooksRead(
                 books = books.sorted().subList(0, maxBooks),
