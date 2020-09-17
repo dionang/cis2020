@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
-import java.lang.Integer.max
+import java.lang.Integer.min
 
 @RestController
 class BabylonController {
@@ -24,7 +24,7 @@ class BabylonController {
 
     companion object {
         fun evaluate(books: List<Int>, days: ArrayList<Int>): Int {
-            val maxBooks = max(days.size * 4, books.size)
+            val maxBooks = min(days.size * 4, books.size)
             println("maxBooks: $maxBooks")
             return getNumberOfBooksRead(
                 books = books.sorted().subList(0, maxBooks),
