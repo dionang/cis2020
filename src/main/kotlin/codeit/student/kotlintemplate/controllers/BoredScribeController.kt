@@ -39,12 +39,41 @@ class BoredScribeController(val resourceLoader: ResourceLoader) {
             dictionary.add(reader.readLine())
         }
 
-        val words = findNextWords(string, dictionary, 0)
+        var words = findValidSolutionIfExists(string, dictionary, 0)
+        if (words.size == 1) {
+            words = findNextWordsGreedy(string, dictionary, 0)
+        }
 
         return words.joinToString(separator = " ") + string.substring(words.sumBy { it.length })
     }
 
-    fun findNextWords(string: String, dictionary: Set<String>, fromIndex: Int): List<String> {
+    fun findValidSolutionIfExists(string: String, dictionary: Set<String>, fromIndex: Int): List<String> {
+        if (fromIndex >= string.length) return arrayListOf()
+
+        var token = ""
+        var prevToken = ""
+        var nextWord = ""
+        var currWords = emptyList<String>()
+        for (i in fromIndex until string.length){
+            token += string[i]
+            if (token in dictionary) {
+
+                val nextWords = findValidSolutionIfExists(string, dictionary, fromIndex+token.length)
+                val isValidSolution = nextWords.lastOrNull()?.let { it in dictionary } ?: false
+                if (isValidSolution && token.length > prevToken.length) {
+                    nextWord = token
+                    currWords = nextWords
+                }
+
+                prevToken = token
+            }
+        }
+
+        if (nextWord.isEmpty()) return listOf(string.substring(fromIndex))
+        return listOf(nextWord) + currWords
+    }
+
+    fun findNextWordsGreedy(string: String, dictionary: Set<String>, fromIndex: Int): List<String> {
         if (fromIndex >= string.length) return arrayListOf()
 
         var token = ""
@@ -55,7 +84,7 @@ class BoredScribeController(val resourceLoader: ResourceLoader) {
             token += string[i]
             if (token in dictionary) {
                 if (token.length > prevToken.length) {
-                    val nextWords = findNextWords(string, dictionary, fromIndex+token.length)
+                    val nextWords = findNextWordsGreedy(string, dictionary, fromIndex+token.length)
                     if (nextWords.size >= currWords.size ) {
                         nextWord = token
                         currWords = nextWords
