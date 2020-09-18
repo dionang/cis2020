@@ -40,9 +40,9 @@ class BoredScribeController(val resourceLoader: ResourceLoader) {
         }
 
         var words = findValidSolutionIfExists(string, dictionary, string.length)
-        if (words.size == 1) {
-            words = findNextWordsGreedy(string, dictionary, string.length)
-        }
+//        if (words.size == 1) {
+//            words = findNextWordsGreedy(string, dictionary, string.length)
+//        }
 
         return string.substring(0, string.length - words.sumBy{ it.length }) + words.joinToString(separator = " ")
     }
