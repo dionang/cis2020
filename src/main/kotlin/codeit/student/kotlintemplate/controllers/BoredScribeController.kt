@@ -31,7 +31,7 @@ class BoredScribeController(val resourceLoader: ResourceLoader) {
 
     fun getExpandedString(string: String): String {
         val reader = BufferedReader(
-            InputStreamReader(resourceLoader.getResource("classpath:wordlist.txt").inputStream)
+            InputStreamReader(resourceLoader.getResource("classpath:en.txt").inputStream)
         )
 
         val dictionary = mutableSetOf<String>()
