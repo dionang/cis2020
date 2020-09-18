@@ -7,19 +7,22 @@ import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
-import kotlin.math.ceil
-import kotlin.math.min
+import java.io.BufferedReader
+import javax.servlet.http.HttpServletRequest
 
 @RestController
 class XeroxController {
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
     @PostMapping("/")
-    fun getOptimalPrintSchedule(@RequestBody request: XeroxRequest): Map<String, List<PrintJob>> {
+    fun getOptimalPrintSchedule(request: HttpServletRequest): Map<String, List<PrintJob>> {
+
         logger.info("Request received $request")
-        val response = evaluate(request.num_of_a3_copiers, request.num_of_a4_copiers, request.documents)
-        logger.info("Returning result $response")
-        return response
+        print(request.inputStream.bufferedReader().use(BufferedReader::readText))
+//        val response = evaluate(request.num_of_a3_copiers, request.num_of_a4_copiers, request.documents)
+//        logger.info("Returning result $response")
+//        return response
+        return mapOf()
     }
 
     companion object {
