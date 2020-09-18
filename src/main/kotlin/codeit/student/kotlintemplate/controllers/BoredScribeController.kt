@@ -39,27 +39,26 @@ class BoredScribeController(val resourceLoader: ResourceLoader) {
             dictionary.add(reader.readLine())
         }
 
-        var words = findValidSolutionIfExists(string, dictionary, 0)
+        var words = findValidSolutionIfExists(string, dictionary, string.length)
         if (words.size == 1) {
-            words = findNextWordsGreedy(string, dictionary, 0)
+            words = findNextWordsGreedy(string, dictionary, string.length)
         }
 
-        return words.joinToString(separator = " ") + string.substring(words.sumBy { it.length })
+        return string.substring(0, string.length - words.sumBy{ it.length }) + words.joinToString(separator = " ")
     }
 
-    fun findValidSolutionIfExists(string: String, dictionary: Set<String>, fromIndex: Int): List<String> {
-        if (fromIndex >= string.length) return arrayListOf()
+    fun findValidSolutionIfExists(string: String, dictionary: Set<String>, toIndex: Int): List<String> {
+        if (toIndex <= 0) return arrayListOf()
 
         var token = ""
         var prevToken = ""
         var nextWord = ""
         var currWords = emptyList<String>()
-        for (i in fromIndex until string.length){
-            token += string[i]
+        for (i in (toIndex-1) downTo 0) {
+            token = string[i] + token
             if (token in dictionary) {
-
-                val nextWords = findValidSolutionIfExists(string, dictionary, fromIndex+token.length)
-                val isValidSolution = nextWords.lastOrNull()?.let { it in dictionary } ?: false
+                val nextWords = findValidSolutionIfExists(string, dictionary, toIndex-token.length)
+                val isValidSolution = nextWords.firstOrNull() ?.let { it in dictionary } ?: false
                 if (isValidSolution && token.length > prevToken.length) {
                     nextWord = token
                     currWords = nextWords
@@ -69,34 +68,33 @@ class BoredScribeController(val resourceLoader: ResourceLoader) {
             }
         }
 
-        if (nextWord.isEmpty()) return listOf(string.substring(fromIndex))
-        return listOf(nextWord) + currWords
+        if (nextWord.isEmpty()) return listOf(string.substring(0, toIndex))
+        return currWords + nextWord
     }
 
-    fun findNextWordsGreedy(string: String, dictionary: Set<String>, fromIndex: Int): List<String> {
-        if (fromIndex >= string.length) return arrayListOf()
+    fun findNextWordsGreedy(string: String, dictionary: Set<String>, toIndex: Int): List<String> {
+        if (toIndex < 0) return arrayListOf()
 
         var token = ""
         var prevToken = ""
         var nextWord = ""
         var currWords = emptyList<String>()
-        for (i in fromIndex until string.length){
-            token += string[i]
+        for (i in (toIndex-1) downTo 0){
+            token = string[i] + token
             if (token in dictionary) {
                 if (token.length > prevToken.length) {
-                    val nextWords = findNextWordsGreedy(string, dictionary, fromIndex+token.length)
+                    val nextWords = findNextWordsGreedy(string, dictionary, toIndex-token.length)
                     if (nextWords.size >= currWords.size ) {
                         nextWord = token
                         currWords = nextWords
                     }
-
                 }
                 prevToken = token
             }
         }
 
         if (nextWord.isEmpty()) return emptyList()
-        return listOf(nextWord) + currWords
+        return currWords + nextWord
     }
 
     fun decrypt(encryptedText: String): String {
