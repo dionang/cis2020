@@ -29,6 +29,10 @@ class BoredScribeController(val resourceLoader: ResourceLoader) {
         return response
     }
 
+    fun getEncryptionCount() {
+
+    }
+
     fun getExpandedString(string: String): String {
         val reader = BufferedReader(
             InputStreamReader(resourceLoader.getResource("classpath:en.txt").inputStream)
@@ -40,9 +44,6 @@ class BoredScribeController(val resourceLoader: ResourceLoader) {
         }
 
         var words = findValidSolutionIfExists(string, dictionary, string.length)
-//        if (words.size == 1) {
-//            words = findNextWordsGreedy(string, dictionary, string.length)
-//        }
 
         return string.substring(0, string.length - words.sumBy{ it.length }) + words.joinToString(separator = " ")
     }
