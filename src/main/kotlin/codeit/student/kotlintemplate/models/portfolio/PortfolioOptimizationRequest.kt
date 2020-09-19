@@ -1,5 +1,5 @@
 package codeit.student.kotlintemplate.models.portfolio
 
 data class PortfolioOptimizationRequest(
-    val inputs: List<Test>
+    val inputs: List<List<Test>>
 )

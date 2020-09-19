@@ -16,15 +16,14 @@ class PortfolioOptimizationController {
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
     @PostMapping("/optimizedportfolio")
-    fun evaluate(request: HttpServletRequest): PortfolioOptimizationResponse {
+    fun evaluate(@RequestBody request: PortfolioOptimizationRequest): PortfolioOptimizationResponse {
+//        print(request.inputStream.bufferedReader().use(BufferedReader::readText))
         logger.info("Request received $request")
-        print(request.inputStream.bufferedReader().use(BufferedReader::readText))
-//        val response = PortfolioOptimizationResponse(
-//            request.inputs.map{ evaluate(it) }
-//        )
-//        logger.info("Returning result $response")
-//        return response
-        return PortfolioOptimizationResponse(emptyList())
+        val response = PortfolioOptimizationResponse(
+            request.inputs.map { evaluate(it.first()) }
+        )
+        logger.info("Returning result $response")
+        return response
     }
 
     companion object {
