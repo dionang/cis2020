@@ -52,21 +52,21 @@ internal class SaladSpreeControllerTest {
         assertThat(actual).isEqualTo(expected)
     }
 
-    @Test
-    fun `test case 4`() {
-        val expected = 3
-        val actual = SaladSpreeController.getMinAmountSpent(
-            numberOfSalads = 2,
-            saladPricesStreetMap = listOf(
-                listOf("2", "3", "X", "2"),
-                listOf("4", "1", "X", "4"),
-                listOf("3", "2", "X", "X"),
-                listOf("X", "X", "X", "5")
-            )
-        )
-
-        assertThat(actual).isEqualTo(expected)
-    }
+//    @Test
+//    fun `test case 4`() {
+//        val expected = 3
+//        val actual = SaladSpreeController.getMinAmountSpent(
+//            numberOfSalads = 2,
+//            saladPricesStreetMap = listOf(
+//                listOf("2", "3", "X", "2"),
+//                listOf("4", "1", "X", "4"),
+//                listOf("3", "2", "X", "X"),
+//                listOf("X", "X", "X", "5")
+//            )
+//        )
+//
+//        assertThat(actual).isEqualTo(expected)
+//    }
 
     @Test
     fun `test case 5`() {
