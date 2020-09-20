@@ -10,8 +10,8 @@ class MagicalFruitBasketController {
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
     @GetMapping("/fruitbasket")
-    fun getGuess(@RequestBody request: Map<String, Int>): Int {
-        logger.info("Request received $request")
+    fun getGuess(): Int {
+//        logger.info("Request received $request")
         val response = 0
         logger.info("Returning result $response")
         return response
