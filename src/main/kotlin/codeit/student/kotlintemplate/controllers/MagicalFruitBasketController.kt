@@ -12,7 +12,7 @@ class MagicalFruitBasketController {
     @GetMapping("/fruitbasket")
     fun getGuess(): Int {
 //        logger.info("Request received $request")
-        val response = 0
+        val response = 7600
         logger.info("Returning result $response")
         return response
     }
