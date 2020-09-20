@@ -69,4 +69,23 @@ internal class RevisitGeometryControllerTest {
 
         assertThat(actual).isEqualTo(expected)
     }
+
+    @Test
+    fun `test case 4`() {
+        val expected = emptyList<Point>()
+
+        val actual = RevisitGeometryController.getIntersectionPoints(
+            shapeCoordinates = listOf(
+                Point(33.0, 61.0),
+                Point(93.0, 81.0)
+            ),
+            lineCoordinates = listOf(
+                Point(-88.0, 85.0),
+                Point(-58.0, 97.0)
+            )
+        )
+
+        println(actual)
+        assertThat(actual).isEqualTo(expected)
+    }
 }
