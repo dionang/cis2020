@@ -12,7 +12,7 @@ data class FruitBasket (
     val maAvocadoWeight: Int = 45,
     val maPineappleWeight: Int = 50,
     val maPomegranateWeight: Int = 12,
-    val maRamubutanWeight: Int = 12,
+    val maRamubutanWeight: Int = 25,
     val maWatermelonWeight: Int = 55
 ) {
     fun getWeight(): Int {
