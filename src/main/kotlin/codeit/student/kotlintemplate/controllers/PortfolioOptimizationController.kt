@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import java.io.BufferedReader
+import java.math.BigDecimal
+import java.math.RoundingMode
 import javax.servlet.http.HttpServletRequest
+import kotlin.math.roundToInt
 
 @RestController
 class PortfolioOptimizationController {
@@ -29,13 +32,16 @@ class PortfolioOptimizationController {
     companion object {
         fun evaluate(test: Test): Hedge {
             val hedges = test.IndexFutures.map { future ->
-                val optimalHedgeRatio = future.CoRelationCoefficient * test.Portfolio.SpotPrcVol / future.FuturePrcVol
+                var optimalHedgeRatio = future.CoRelationCoefficient * test.Portfolio.SpotPrcVol / future.FuturePrcVol
+                optimalHedgeRatio = BigDecimal.valueOf(optimalHedgeRatio).setScale(3, RoundingMode.HALF_EVEN).toDouble()
+
                 val numContracts = optimalHedgeRatio * test.Portfolio.Value / (future.IndexFuturePrice * future.Notional)
-                Hedge(future.Name, optimalHedgeRatio, numContracts.toInt())
+                Hedge(future.Name, optimalHedgeRatio, numContracts.roundToInt())
             }
 
-            println(hedges)
-            return hedges.last()
+            print(hedges)
+
+            return hedges.minBy { it.NumFuturesContract }!!
         }
     }
 }
