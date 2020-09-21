@@ -32,7 +32,6 @@ class RevisitGeometryController {
                 }
                 .mapNotNull { it }
                 .map { it.round() }
-
         }
 
         fun findIntersectionPoint(p1: Point, p2: Point, l1: Point, l2: Point): Point? {

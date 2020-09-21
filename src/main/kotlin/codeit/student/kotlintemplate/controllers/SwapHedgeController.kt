@@ -14,7 +14,7 @@ class SwapHedgeController {
     fun evaluate(@RequestBody request: SwapHedgeRequest): Map<String, Int> {
         logger.info("Request received $request")
         val response = mapOf(
-            "action" to getAction(request)
+            "order" to getAction(request)
         )
         logger.info("Returning result $response")
         return response
