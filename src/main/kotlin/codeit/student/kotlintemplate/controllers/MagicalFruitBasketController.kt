@@ -13,7 +13,7 @@ class MagicalFruitBasketController {
     @PostMapping("/fruitbasket", consumes = [MediaType.TEXT_PLAIN_VALUE])
     fun getGuess(@RequestBody request: String): Int {
         logger.info("Request received $request")
-        val response = 5000
+        val response = 0
         logger.info("Returning result $response")
         return response
     }

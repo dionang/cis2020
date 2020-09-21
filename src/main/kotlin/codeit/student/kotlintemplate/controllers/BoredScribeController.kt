@@ -19,23 +19,24 @@ class BoredScribeController(val resourceLoader: ResourceLoader) {
     fun evaluate(@RequestBody request: List<Test>): List<Answer> {
         logger.info("Request received $request")
         val response = request.map {
+            val decryptedText = decrypt(it.encryptedText)
             Answer(
                 id = it.id,
-                encryptionCount = 1,
-                originalText = decrypt(it.encryptedText)
+                encryptionCount = getEncryptionCount(decryptedText, it.encryptedText),
+                originalText = getExpandedString(decryptedText)
             )
         }
         logger.info("Returning result $response")
         return response
     }
 
-    fun getEncryptionCount() {
-
+    fun getEncryptionCount(decryptedText: String, encryptedText: String): Int {
+        return 1
     }
 
     fun getExpandedString(string: String): String {
         val reader = BufferedReader(
-            InputStreamReader(resourceLoader.getResource("classpath:en.txt").inputStream)
+            InputStreamReader(resourceLoader.getResource("classpath:wordlist.txt").inputStream)
         )
 
         val dictionary = mutableSetOf<String>()
@@ -43,7 +44,7 @@ class BoredScribeController(val resourceLoader: ResourceLoader) {
             dictionary.add(reader.readLine())
         }
 
-        var words = findValidSolutionIfExists(string, dictionary, string.length)
+        val words = findValidSolutionIfExists(string, dictionary, string.length)
 
         return string.substring(0, string.length - words.sumBy{ it.length }) + words.joinToString(separator = " ")
     }
@@ -99,16 +100,13 @@ class BoredScribeController(val resourceLoader: ResourceLoader) {
     }
 
     fun decrypt(encryptedText: String): String {
-        return getExpandedString(
-            (1..26).map { shift ->
-                val decryptedText = decode(encryptedText, shift)
-                decryptedText to getEntropy(decryptedText)
-            }.minBy { it.second }!!.first
-        )
+        return (1..26).map { shift ->
+            val decryptedText = decode(encryptedText, shift)
+            decryptedText to getEntropy(decryptedText)
+        }.minBy { it.second }!!.first
     }
 
     companion object {
-        // unigram frequencies of A-Z
         private val ENGLISH_FREQS = listOf(
             0.08167, 0.01492, 0.02782, 0.04253, 0.12702, 0.02228, 0.02015, 0.06094, 0.06966, 0.00153, 0.00772, 0.04025, 0.02406,
             0.06749, 0.07507, 0.01929, 0.00095, 0.05987, 0.06327, 0.09056, 0.02758, 0.00978, 0.02360, 0.00150, 0.01974, 0.00074
@@ -116,36 +114,16 @@ class BoredScribeController(val resourceLoader: ResourceLoader) {
 
         private fun getEntropy(string: String): Double {
             var sum = 0.0
-            var ignored = 0
             for (ch in string) {
-                when (val c = ch.toInt()) {
-                    in 65..90 -> {
-                        sum += ln(ENGLISH_FREQS[c - 65])
-                    }  // Uppercase
-                    in 97..122 -> {
-                        sum += ln(ENGLISH_FREQS[c - 97])
-                    }  // Lowercase
-                    else -> ignored++
-                }
+                sum += ln(ENGLISH_FREQS[ch.toInt() - 97])
             }
-            return -sum / ln(2.0) / (string.length - ignored)
+            return -sum / ln(2.0) / string.length
         }
 
         private fun decode(encryptedText: String, shift: Int): String {
-            var result = ""
-            for (ch in encryptedText) {
-                result += when (val c = ch.toInt()) {
-                    in 65..90 -> {
-                        (((c - 65 + shift) % 26) + 65).toChar()
-                    }
-                    in 97..122 -> {
-                        (((c - 97 + shift) % 26) + 97).toChar()
-
-                    }
-                    else -> ch
-                }
-            }
-            return result
+            return encryptedText.map { ch ->
+                (((ch.toInt() - 97 + shift) % 26) + 97).toChar()
+            }.joinToString(separator = "")
         }
     }
 }
