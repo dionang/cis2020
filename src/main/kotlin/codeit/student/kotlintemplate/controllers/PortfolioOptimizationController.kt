@@ -39,8 +39,6 @@ class PortfolioOptimizationController {
                 Hedge(future.Name, optimalHedgeRatio, numContracts.roundToInt())
             }
 
-            print(hedges)
-
             return hedges.minBy { it.NumFuturesContract }!!
         }
     }
