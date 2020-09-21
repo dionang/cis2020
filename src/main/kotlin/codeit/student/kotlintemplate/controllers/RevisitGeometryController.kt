@@ -25,7 +25,10 @@ class RevisitGeometryController {
 
     companion object {
         fun getIntersectionPoints(shapeCoordinates: List<Point>, lineCoordinates: List<Point>): List<Point> {
-            val pairwisePoints = shapeCoordinates + shapeCoordinates.first()
+            val pairwisePoints = shapeCoordinates.toMutableList()
+            if (shapeCoordinates.size > 2)
+                pairwisePoints += shapeCoordinates.first()
+
             return pairwisePoints.
                 zipWithNext { p1, p2 ->
                     findIntersectionPoint(p1, p2, lineCoordinates.first(), lineCoordinates.last())
