@@ -50,31 +50,6 @@ class SaladSpreeController {
                 }
             }
 
-//            for (j in saladPricesStreetMap[0].indices) {
-//                var consecutive = 0
-//                var runningTotal = 0
-//
-//                for (i in saladPricesStreetMap.indices) {
-//                    val store = saladPricesStreetMap[i][j]
-//
-//                    if (store == "X") {
-//                        consecutive = 0
-//                        runningTotal = 0
-//                    } else  {
-//                        consecutive += 1
-//                        runningTotal += store.toInt()
-//
-//                        if (consecutive > numberOfSalads) {
-//                            runningTotal -= saladPricesStreetMap[i-numberOfSalads][j].toInt()
-//                        }
-//
-//                        if (consecutive >= numberOfSalads && runningTotal < min) {
-//                            min = runningTotal
-//                        }
-//                    }
-//                }
-//            }
-
             return if (min != Int.MAX_VALUE) min else 0
         }
     }
