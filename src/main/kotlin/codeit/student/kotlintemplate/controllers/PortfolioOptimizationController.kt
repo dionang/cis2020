@@ -36,10 +36,16 @@ class PortfolioOptimizationController {
                 optimalHedgeRatio = BigDecimal.valueOf(optimalHedgeRatio).setScale(3, RoundingMode.HALF_EVEN).toDouble()
 
                 val numContracts = optimalHedgeRatio * test.Portfolio.Value / (future.IndexFuturePrice * future.Notional)
-                Hedge(future.Name, optimalHedgeRatio, numContracts.roundToInt())
+                Hedge(future.Name, optimalHedgeRatio, numContracts.roundToInt()) to future
             }
 
-            return hedges.minBy { it.NumFuturesContract }!!
+            return hedges.minWith(
+                compareBy(
+                    { it.first.OptimalHedgingRatio },
+                    { it.second.FuturePrcVol },
+                    { it.first.NumFuturesContract }
+                )
+            )!!.first
         }
     }
 }
