@@ -24,18 +24,7 @@ class SwapHedgeController {
         fun getAction(request: SwapHedgeRequest): Int {
             if (request.time == 0) return 0
 
-            return request.order
-//            // client buys
-//            if (request.order!! > 0) {
-//                val diff = request.ask - request.bid
-//
-//
-//            // client sells
-//            } else if (request.order!! < 0) {
-//
-//            } else {
-//                return 0
-//            }
+            return request.order / 2
         }
     }
 }
