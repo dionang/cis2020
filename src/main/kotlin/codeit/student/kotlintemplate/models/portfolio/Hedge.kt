@@ -1,12 +1,11 @@
 package codeit.student.kotlintemplate.models.portfolio
 
-import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.databind.annotation.JsonNaming
+import com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy
 
+@JsonNaming(SnakeCaseStrategy::class)
 data class Hedge (
-    @JsonProperty("HedgePositionName")
     val HedgePositionName: String,
-    @JsonProperty("OptimalHedgingRatio")
     val OptimalHedgingRatio: Double,
-    @JsonProperty("NumFuturesContract")
     val NumFuturesContract: Int
 )
