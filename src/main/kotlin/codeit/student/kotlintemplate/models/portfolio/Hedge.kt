@@ -6,6 +6,6 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy.UpperCamelCaseStrat
 @JsonNaming(UpperCamelCaseStrategy::class)
 data class Hedge (
     val HedgePositionName: String,
-    val OptimalHedgingRatio: Double,
+    val OptimalHedgeRatio: Double,
     val NumFuturesContract: Int
 )
