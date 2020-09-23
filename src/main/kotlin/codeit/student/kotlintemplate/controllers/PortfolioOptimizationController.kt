@@ -41,7 +41,7 @@ class PortfolioOptimizationController {
 
             return hedges.minWith(
                 compareBy(
-                    { it.first.OptimalHedgingRatio },
+                    { it.first.OptimalHedgeRatio },
                     { it.second.FuturePrcVol },
                     { it.first.NumFuturesContract }
                 )
