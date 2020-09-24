@@ -6,8 +6,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
-import java.io.BufferedReader
-import javax.servlet.http.HttpServletRequest
 import kotlin.math.min
 
 @RestController
@@ -15,17 +13,15 @@ class IntelligentFarmingController {
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
     @PostMapping("/intelligent-farming")
-//    fun getGeneSequence(@RequestBody request: IntelligentFarmingRequestResponse): IntelligentFarmingRequestResponse {
-    fun getGeneSequence(request: HttpServletRequest): String {
-        print(request.inputStream.bufferedReader().use(BufferedReader::readText))
+    fun getGeneSequence(@RequestBody request: IntelligentFarmingRequestResponse): IntelligentFarmingRequestResponse {
         logger.info("Request received $request")
-//        val response = request.copy(
-//            list = request.list.map {
-//                Test(it.id, getMaxDRIGeneSequence(it.geneSequence))
-//            }
-//        )
-//        logger.info("Returning result $response")
-        return "response"
+        val response = request.copy(
+            list = request.list.map {
+                Test(it.id, getMaxDRIGeneSequence(it.geneSequence))
+            }
+        )
+        logger.info("Returning result $response")
+        return response
     }
 
     companion object {
