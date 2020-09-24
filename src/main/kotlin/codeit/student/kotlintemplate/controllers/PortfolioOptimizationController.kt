@@ -33,15 +33,16 @@ class PortfolioOptimizationController {
         fun evaluate(test: Test): Hedge {
             val hedges = test.IndexFutures.map { future ->
                 var optimalHedgeRatio = future.CoRelationCoefficient * test.Portfolio.SpotPrcVol / future.FuturePrcVol
-                optimalHedgeRatio = BigDecimal.valueOf(optimalHedgeRatio).setScale(3, RoundingMode.HALF_EVEN).toDouble()
+                optimalHedgeRatio = BigDecimal.valueOf(optimalHedgeRatio).setScale(3, RoundingMode.HALF_UP).toDouble()
 
                 val numContracts = optimalHedgeRatio * test.Portfolio.Value / (future.IndexFuturePrice * future.Notional)
-                Hedge(future.Name, optimalHedgeRatio, numContracts.roundToInt()) to future
+
+                Hedge(future.Name, optimalHedgeRatio, BigDecimal.valueOf(numContracts).setScale(0, RoundingMode.HALF_UP).toInt()) to future
             }
 
             return hedges.minWith(
                 compareBy(
-                    { it.first.OptimalHedgingRatio },
+                    { it.first.OptimalHedgeRatio },
                     { it.second.FuturePrcVol },
                     { it.first.NumFuturesContract }
                 )
