@@ -8,11 +8,8 @@ import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
-import java.io.BufferedReader
 import java.math.BigDecimal
 import java.math.RoundingMode
-import javax.servlet.http.HttpServletRequest
-import kotlin.math.roundToInt
 
 @RestController
 class PortfolioOptimizationController {

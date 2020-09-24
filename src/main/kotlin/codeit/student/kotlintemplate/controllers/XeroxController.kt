@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 class XeroxController {
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
-    @PostMapping("/")
+    @PostMapping("/xerox")
     fun getOptimalPrintSchedule(@RequestBody request: XeroxRequest): Map<String, List<PrintJob>> {
         logger.info("Request received $request")
         val response = evaluate(request.num_of_a3_copiers, request.num_of_a4_copiers, request.documents)
