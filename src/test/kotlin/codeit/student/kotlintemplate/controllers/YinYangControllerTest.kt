@@ -9,7 +9,8 @@ internal class YinYangControllerTest {
         val expected = 1.0
         val actual   = YinYangController.calculateEV(
             elements = "yYY",
-            numberOfOperations = 1
+            numberOfOperations = 1,
+            memo = mutableMapOf()
         )
         assertThat(actual).isEqualTo(expected)
     }
@@ -19,7 +20,8 @@ internal class YinYangControllerTest {
         val expected = 1
         val actual   = YinYangController.calculateEV(
             elements = "YYy",
-            numberOfOperations = 1
+            numberOfOperations = 1,
+            memo = mutableMapOf()
         )
         assertThat(actual).isEqualTo(expected)
     }
@@ -29,7 +31,8 @@ internal class YinYangControllerTest {
         val expected = 2.0 / 3
         val actual   = YinYangController.calculateEV(
             elements = "Yyy",
-            numberOfOperations = 1
+            numberOfOperations = 1,
+            memo = mutableMapOf()
         )
         assertThat(actual).isEqualTo(expected)
     }
@@ -39,8 +42,22 @@ internal class YinYangControllerTest {
         val expected = 1.5
         val actual   = YinYangController.calculateEV(
             elements = "YyYy",
-            numberOfOperations = 2
+            numberOfOperations = 2,
+            memo = mutableMapOf()
         )
         assertThat(actual).isEqualTo(expected)
     }
+
+    @Test
+    fun `simple test case 5`() {
+//        val expected = 1.5
+        val actual   = YinYangController.calculateEV(
+            elements = "YyyYY",
+            numberOfOperations = 2,
+            memo = mutableMapOf()
+        )
+//        assertThat(actual).isEqualTo(expected)
+        println(actual)
+    }
+
 }
