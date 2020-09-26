@@ -16,7 +16,7 @@ class YinYangController {
         logger.info("Request received $request")
 
         val response = mapOf(
-            "result" to calculateEV(request.elements, request.number_of_operations)
+            "result" to calculateEV(request.elements, request.number_of_operations, mutableMapOf())
         )
 
         logger.info("Returning result $response")
@@ -24,10 +24,11 @@ class YinYangController {
     }
 
     companion object {
-        fun calculateEV(elements: String, numberOfOperations: Int, memo: MutableMap<Pair<String, Int>, Double> = mutableMapOf()): Double {
+        fun calculateEV(elements: String, numberOfOperations: Int, memo: MutableMap<Pair<String, Int>, Double>): Double {
             // save result in memo
-            if (memo.contains(Pair(elements, numberOfOperations))) {
-                return memo.getValue(Pair(elements, numberOfOperations))
+            val combination = Pair(elements, numberOfOperations)
+            if (memo.contains(combination)) {
+                return memo.getValue(combination)
             }
 
             // base case: number of operations = 1
@@ -40,7 +41,9 @@ class YinYangController {
                     prob += if (left == 'y' && right == 'y') 0.0 else 1.0
                 }
 
-                return prob / elements.length
+                val result = prob / elements.length
+                memo[combination] = result
+                return result
             } else {
                 // recurse to children
                 var prob = 0.0
@@ -51,22 +54,23 @@ class YinYangController {
                     val child1 = elements.substring(0, i) + elements.substring(i+1)
                     val child2 = elements.substring(0, elements.length - 1 - i) + elements.substring(elements.length - i)
 
-
                     if (left == right) {
                         // adds the result with the best ev (take letter from either left or right)
-                        prob += max(calculateEV(child1, numberOfOperations - 1), calculateEV(child2, numberOfOperations - 1))
+                        prob += max(calculateEV(child1, numberOfOperations - 1, memo), calculateEV(child2, numberOfOperations - 1, memo))
 
                         // adds ev of selecting Yang for current string
                         if (left == 'Y')
                             prob += 1
                     } else if (left == 'Y') {
-                        prob += 1 + calculateEV(child1, numberOfOperations - 1)
+                        prob += 1 + calculateEV(child1, numberOfOperations - 1, memo)
                     } else {
-                        prob += 1 + calculateEV(child2, numberOfOperations - 1)
+                        prob += 1 + calculateEV(child2, numberOfOperations - 1, memo)
                     }
                 }
 
-                return prob / elements.length
+                val result = prob / elements.length
+                memo[combination] = result
+                return result
             }
         }
     }
