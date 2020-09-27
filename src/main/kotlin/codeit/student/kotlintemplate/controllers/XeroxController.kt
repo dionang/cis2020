@@ -13,9 +13,15 @@ class XeroxController {
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
     @PostMapping("/xerox")
-    fun getOptimalPrintSchedule(@RequestBody request: XeroxRequest): Map<String, List<PrintJob>> {
+    fun getOptimalPrintSchedule(@RequestBody request: XeroxRequest):List<PrintJob> {
         logger.info("Request received $request")
-        val response = evaluate(request.num_of_a3_copiers, request.num_of_a4_copiers, request.documents)
+//        val response = evaluate(request.num_of_a3_copiers, request.num_of_a4_copiers, request.documents)
+
+        val response = listOf(
+            PrintJob(
+                1, 2, "M1"
+            )
+        )
         logger.info("Returning result $response")
         return response
     }

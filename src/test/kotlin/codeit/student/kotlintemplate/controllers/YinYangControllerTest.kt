@@ -52,7 +52,7 @@ internal class YinYangControllerTest {
     fun `simple test case 5`() {
 //        val expected = 1.5
         val actual   = YinYangController.calculateEV(
-            elements = "YyyYY",
+            elements = "YyyY",
             numberOfOperations = 2,
             memo = mutableMapOf()
         )
