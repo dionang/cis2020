@@ -17,9 +17,9 @@ class MagicalFruitBasketController {
         logger.info("Request received $request")
         val basket = jacksonObjectMapper().readValue(request, FruitBasket::class.java)
         println(basket)
-        val response = basket.getWeight()
+//        val response = basket.getWeight()
+        val response = 0
         logger.info("Returning result $response")
         return response
     }
-
 }
